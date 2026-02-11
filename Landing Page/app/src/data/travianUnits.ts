@@ -106,6 +106,11 @@ export function getTribe(id: TribeName): TribeDef {
 export const SERVER_SPEEDS = [1, 2, 3, 5, 10] as const
 export type ServerSpeed = (typeof SERVER_SPEEDS)[number]
 
+/** On 1x server: 1; on 2x/3x/5x/10x speed servers troop movement is 2x (not serverSpeed). */
+export function getMovementMultiplier(serverSpeed: number): number {
+  return serverSpeed === 1 ? 1 : 2
+}
+
 /* ── Predefined tactics (itsemotional guide, 5 min interval base) */
 
 export const PREDEFINED_TACTICS: Tactic[] = [
@@ -183,7 +188,7 @@ export function calcTravelTime(
   bootsBonusPct: number,
   artifactMult: number,
 ): number {
-  const speed = baseSpeed * serverSpeed
+  const speed = baseSpeed * getMovementMultiplier(serverSpeed)
 
   if (distance <= 20) {
     return (distance / (speed * artifactMult)) * 60

@@ -5,6 +5,7 @@ import {
   getTribe,
   getTacticsForTribe,
   calcTravelTime,
+  getMovementMultiplier,
   type TribeName,
   type ServerSpeed,
   type Tactic,
@@ -118,7 +119,7 @@ export function TroopCalculator({ mode, title, showPopulation = false, showBudge
       const u = tribeDef.units.find((u) => u.id === cu.unitId)
       if (u && u.speed < slowest) slowest = u.speed
     }
-    return slowest === Infinity ? 7 : slowest
+    return slowest === Infinity ? 0 : slowest
   }, [selectedTactic, tribeName, activeUnits])
 
   /* ── Tribe change → reset tactic ────────────────────────────── */
@@ -290,7 +291,9 @@ export function TroopCalculator({ mode, title, showPopulation = false, showBudge
 
 
   /* ── Computed display values ────────────────────────────────── */
-  const baseEffective = activeSpeed * serverSpeed
+  const hasSpeed = activeSpeed > 0
+  const movementMult = getMovementMultiplier(serverSpeed)
+  const baseEffective = activeSpeed * movementMult
   const boostedEffective = baseEffective * (1 + tsBonusPct)
 
   /* ── Render ─────────────────────────────────────────────────── */
@@ -301,11 +304,11 @@ export function TroopCalculator({ mode, title, showPopulation = false, showBudge
         <h1 className={styles.h1}>{title}</h1>
         <div className={styles.headerStats}>
           <div className={styles.headerStat}>
-            <span className={styles.headerStatValue}>{baseEffective}</span>
+            <span className={styles.headerStatValue}>{hasSpeed ? baseEffective : '–'}</span>
             <span className={styles.headerStatLabel}>f/h base</span>
           </div>
           <div className={styles.headerStat}>
-            <span className={styles.headerStatValue}>{Math.round(boostedEffective * 10) / 10}</span>
+            <span className={styles.headerStatValue}>{hasSpeed ? Math.round(boostedEffective * 10) / 10 : '–'}</span>
             <span className={styles.headerStatLabel}>f/h effective</span>
           </div>
         </div>
@@ -353,10 +356,6 @@ export function TroopCalculator({ mode, title, showPopulation = false, showBudge
                 <span>{selectedTactic.units.map((u) => `${u.count} ${getUnitName(tribeName, u.unitId)}`).join(' + ')}</span>
               </div>
               <div className={styles.tacticRow}>
-                <span className={styles.tacticLabel}>{t('calculator.baseSpeed')}</span>
-                <span>{baseEffective} {t('calculator.fieldsHour')} ({activeSpeed} base x {serverSpeed})</span>
-              </div>
-              <div className={styles.tacticRow}>
                 <span className={styles.tacticLabel}>{t('calculator.requirements')}</span>
                 <span>{selectedTactic.requirements}</span>
               </div>
@@ -373,18 +372,14 @@ export function TroopCalculator({ mode, title, showPopulation = false, showBudge
                   return (
                     <label key={u.id} className={styles.customUnit}>
                       <span className={styles.customUnitName}>{u.name}</span>
-                      <span className={styles.customUnitSpeed}>({u.speed} f/h)</span>
+                      <span className={styles.customUnitSpeed}>
+                        ({u.speed * movementMult} f/h)
+                      </span>
                       <input className={styles.customInput} type="number" min={0} max={999} value={cu?.count ?? 0} onChange={(e) => setCustomCount(u.id, Number(e.target.value))} />
                     </label>
                   )
                 })}
               </div>
-              {activeUnits.length > 0 && (
-                <div className={styles.tacticRow}>
-                  <span className={styles.tacticLabel}>{t('calculator.baseSpeed')}</span>
-                  <span>{baseEffective} {t('calculator.fieldsHour')} ({activeSpeed} base x {serverSpeed})</span>
-                </div>
-              )}
             </div>
           )}
         </div>

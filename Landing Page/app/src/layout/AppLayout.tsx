@@ -1,5 +1,6 @@
 import { Outlet, ScrollRestoration, Link } from 'react-router-dom'
 import { Header } from '../components/Header/Header.tsx'
+import { showFullNav } from '../lib/env.ts'
 import { useTranslation } from '../i18n/index.ts'
 import styles from './AppLayout.module.css'
 
@@ -19,9 +20,13 @@ export function AppLayout() {
           </div>
           <nav className={styles.footerNav} aria-label="Footer">
             <Link to="/" className={styles.footerLink}>{t('nav.home')}</Link>
-            <Link to="/extensions" className={styles.footerLink}>{t('nav.extensions')}</Link>
-            <Link to="/how-to" className={styles.footerLink}>{t('nav.howTo')}</Link>
-            <Link to="/pricing" className={styles.footerLink}>{t('nav.pricing')}</Link>
+            {showFullNav && (
+              <>
+                <Link to="/extensions" className={styles.footerLink}>{t('nav.extensions')}</Link>
+                <Link to="/how-to" className={styles.footerLink}>{t('nav.howTo')}</Link>
+                <Link to="/pricing" className={styles.footerLink}>{t('nav.pricing')}</Link>
+              </>
+            )}
           </nav>
         </div>
         <div className={styles.footerBottom}>

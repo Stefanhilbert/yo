@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { extensionsData } from '../lib/extensionsData.ts'
+import { showFullNav } from '../lib/env.ts'
 import { ExtensionCard } from '../components/ExtensionCard/ExtensionCard.tsx'
 import { useTranslation } from '../i18n/index.ts'
 import styles from './HomePage.module.css'
@@ -38,32 +39,36 @@ export function HomePage() {
           <p className={styles.subtitle}>
             {t('home.hero.subtitle')}
           </p>
-          <div className={styles.ctas}>
-            <Link to="/extensions" className={styles.primary}>
-              {t('home.cta.browse')}
-            </Link>
-            <Link to="/how-to" className={styles.secondary}>
-              {t('home.cta.howTo')}
-            </Link>
-          </div>
+          {showFullNav && (
+            <div className={styles.ctas}>
+              <Link to="/extensions" className={styles.primary}>
+                {t('home.cta.browse')}
+              </Link>
+              <Link to="/how-to" className={styles.secondary}>
+                {t('home.cta.howTo')}
+              </Link>
+            </div>
+          )}
         </div>
       </section>
 
-      <div className={styles.page}>
-        <section className={styles.section}>
-          <div className={styles.sectionHeader}>
-            <h2 className={styles.h2}>{t('home.section.extensions')}</h2>
-            <Link to="/extensions" className={styles.viewAll}>
-              {t('home.viewAll')}
-            </Link>
-          </div>
-          <div className={styles.cards}>
-            {exts.map((ext) => (
-              <ExtensionCard key={ext.slug} ext={ext} />
-            ))}
-          </div>
-        </section>
-      </div>
+      {showFullNav && (
+        <div className={styles.page}>
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.h2}>{t('home.section.extensions')}</h2>
+              <Link to="/extensions" className={styles.viewAll}>
+                {t('home.viewAll')}
+              </Link>
+            </div>
+            <div className={styles.cards}>
+              {exts.map((ext) => (
+                <ExtensionCard key={ext.slug} ext={ext} />
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
 
       <div className={styles.page}>
         <section className={styles.section}>

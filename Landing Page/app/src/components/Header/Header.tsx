@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { extensionsData } from '../../lib/extensionsData.ts'
+import { showFullNav } from '../../lib/env.ts'
 import { useTribe } from '../TribeProvider.tsx'
 import { useTranslation } from '../../i18n/index.ts'
 import type { Tribe } from '../../types/extensions.ts'
@@ -65,39 +66,41 @@ export function Header() {
             {t('nav.home')}
           </NavLink>
 
-          <div className={styles.dropdownWrap}>
-            <NavLink
-              to="/extensions"
-              className={({ isActive }) => (isActive ? styles.active : styles.link)}
-            >
-              {t('nav.extensions')}
-            </NavLink>
-            <div className={styles.dropdown} role="menu" aria-label={t('nav.extensions')}>
-              {extensionsData.extensions.length === 0 ? (
-                <span className={styles.dropdownEmpty}>{t('dropdown.emptyExtensions')}</span>
-              ) : (
-                extensionsData.extensions.map((ext) => (
-                  <Link key={ext.slug} to={`/extensions/${ext.slug}`} className={styles.dropdownItem}>
-                    <span className={styles.dropdownItemLeft}>
-                      {ext.icon48 ? (
-                        <img className={styles.icon} src={ext.icon48} alt="" />
-                      ) : (
-                        <span className={styles.iconFallback} aria-hidden="true" />
-                      )}
-                      <span className={styles.dropdownTitle}>{ext.name}</span>
-                    </span>
-                    <span className={styles.version}>v{ext.version}</span>
-                  </Link>
-                ))
-              )}
-              <Link to="/how-to" className={styles.dropdownItem}>
-                <span className={styles.dropdownItemLeft}>
-                  <span className={styles.toolIcon} aria-hidden="true">&#128196;</span>
-                  <span className={styles.dropdownTitle}>{t('nav.howTo')}</span>
-                </span>
-              </Link>
+          {showFullNav && (
+            <div className={styles.dropdownWrap}>
+              <NavLink
+                to="/extensions"
+                className={({ isActive }) => (isActive ? styles.active : styles.link)}
+              >
+                {t('nav.extensions')}
+              </NavLink>
+              <div className={styles.dropdown} role="menu" aria-label={t('nav.extensions')}>
+                {extensionsData.extensions.length === 0 ? (
+                  <span className={styles.dropdownEmpty}>{t('dropdown.emptyExtensions')}</span>
+                ) : (
+                  extensionsData.extensions.map((ext) => (
+                    <Link key={ext.slug} to={`/extensions/${ext.slug}`} className={styles.dropdownItem}>
+                      <span className={styles.dropdownItemLeft}>
+                        {ext.icon48 ? (
+                          <img className={styles.icon} src={ext.icon48} alt="" />
+                        ) : (
+                          <span className={styles.iconFallback} aria-hidden="true" />
+                        )}
+                        <span className={styles.dropdownTitle}>{ext.name}</span>
+                      </span>
+                      <span className={styles.version}>v{ext.version}</span>
+                    </Link>
+                  ))
+                )}
+                <Link to="/how-to" className={styles.dropdownItem}>
+                  <span className={styles.dropdownItemLeft}>
+                    <span className={styles.toolIcon} aria-hidden="true">&#128196;</span>
+                    <span className={styles.dropdownTitle}>{t('nav.howTo')}</span>
+                  </span>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className={styles.dropdownWrap}>
             <NavLink
@@ -122,6 +125,11 @@ export function Header() {
             </div>
           </div>
 
+          {showFullNav && (
+            <NavLink to="/pricing" className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+              {t('nav.pricing')}
+            </NavLink>
+          )}
         </nav>
 
         <div className={styles.right}>
