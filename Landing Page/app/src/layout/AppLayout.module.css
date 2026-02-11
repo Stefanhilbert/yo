@@ -1,0 +1,76 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  padding: 32px 16px 64px;
+}
+
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: auto;
+}
+
+.footerInner {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 40px 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.footerBrand {
+  max-width: 320px;
+}
+
+.footerBrandName {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+
+.footerTagline {
+  margin: 8px 0 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+}
+
+.footerLink {
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.footerLink:hover {
+  color: var(--brand);
+}
+
+.footerBottom {
+  border-top: 1px solid var(--border);
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 16px 16px;
+}
+
+.footerCopy {
+  font-size: 13px;
+  color: var(--muted);
+}

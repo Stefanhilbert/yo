@@ -1,0 +1,92 @@
+{
+  "generatedAt": "2026-02-11T07:33:09.397Z",
+  "extensions": [
+    {
+      "slug": "yofarmer",
+      "name": "YOFarmer",
+      "version": "1.0.0",
+      "description": "Send Travian farm lists with human-like timing",
+      "installFolder": "Travian Extension/Travian Farmer",
+      "icon48": "/extensions/yofarmer/48.png",
+      "icon128": "/extensions/yofarmer/128.png",
+      "latestRelease": {
+        "version": "1.0.0",
+        "date": "2026-02-08",
+        "changes": [
+          "Første version af YOFarmer.",
+          "“Send nu” og Auto-mode med menneskelig timing/random delays.",
+          "Valg af farm lists, taktikker pr. liste og mulighed for at linke en fane."
+        ]
+      },
+      "releases": [
+        {
+          "version": "1.0.0",
+          "date": "2026-02-08",
+          "changes": [
+            "Første version af YOFarmer.",
+            "“Send nu” og Auto-mode med menneskelig timing/random delays.",
+            "Valg af farm lists, taktikker pr. liste og mulighed for at linke en fane."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "oasis-scanner",
+      "name": "Travian Oasis Scanner",
+      "version": "1.0.0",
+      "description": "Scan and filter oases with animals near your villages. Fair play: you click, we parse.",
+      "installFolder": "Travian Extension/Travian Oasis Scanner",
+      "icon48": "/extensions/oasis-scanner/48.png",
+      "icon128": "/extensions/oasis-scanner/128.png",
+      "latestRelease": {
+        "version": "1.0.0",
+        "date": "2026-02-08",
+        "changes": [
+          "Første version af Travian Oasis Scanner.",
+          "Scan af synligt kort med radius-filter og bonus-filtre.",
+          "Kopiér koordinater, eksport til CSV, og markér/skjul oaser."
+        ]
+      },
+      "releases": [
+        {
+          "version": "1.0.0",
+          "date": "2026-02-08",
+          "changes": [
+            "Første version af Travian Oasis Scanner.",
+            "Scan af synligt kort med radius-filter og bonus-filtre.",
+            "Kopiér koordinater, eksport til CSV, og markér/skjul oaser."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "tracker",
+      "name": "Travian Tracker",
+      "version": "1.0.0",
+      "description": "Track map.sql, find inactive players, dedupe farm lists",
+      "installFolder": "Travian Extension/Travian Tracker",
+      "icon48": "/extensions/tracker/48.png",
+      "icon128": "/extensions/tracker/128.png",
+      "latestRelease": {
+        "version": "1.0.0",
+        "date": "2026-02-08",
+        "changes": [
+          "Første version af Travian Tracker.",
+          "Scan af `map.sql` med historik, vækst/minus-vækst og kandidat-finder.",
+          "Farm list scanning og dedupe for at undgå targets der allerede er i lister."
+        ]
+      },
+      "releases": [
+        {
+          "version": "1.0.0",
+          "date": "2026-02-08",
+          "changes": [
+            "Første version af Travian Tracker.",
+            "Scan af `map.sql` med historik, vækst/minus-vækst og kandidat-finder.",
+            "Farm list scanning og dedupe for at undgå targets der allerede er i lister."
+          ]
+        }
+      ]
+    }
+  ]
+}

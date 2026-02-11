@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Travian Oasis Scanner",
+  "version": "1.0.0",
+  "description": "Scan and filter oases with animals near your villages. Fair play: you click, we parse.",
+  "permissions": ["storage", "sidePanel", "activeTab", "tabs"],
+  "host_permissions": [
+    "*://*.travian.com/*",
+    "*://*.travian.dk/*",
+    "*://*.travian.de/*",
+    "*://*.international.travian.com/*"
+  ],
+  "action": {
+    "default_title": "Travian Oasis Scanner",
+    "default_icon": {
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.travian.com/*",
+        "*://*.travian.dk/*",
+        "*://*.travian.de/*",
+        "*://*.international.travian.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://*.travian.com/*",
+        "*://*.travian.dk/*",
+        "*://*.travian.de/*",
+        "*://*.international.travian.com/*"
+      ],
+      "js": ["inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ]
+}

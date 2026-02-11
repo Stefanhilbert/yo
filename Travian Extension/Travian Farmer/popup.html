@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-width: 260px;
+      padding: 0;
+      margin: 0;
+      transition: background 0.2s, color 0.2s;
+    }
+    body.theme-light {
+      background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+      color: #1a1a1a;
+    }
+    body.theme-dark {
+      background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      color: #e8e8e8;
+    }
+    .header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    body.theme-light .header { background: rgba(0,0,0,0.06); }
+    body.theme-dark .header { background: rgba(0,0,0,0.2); }
+    .header h1 { margin: 0; font-size: 1.1rem; font-weight: 600; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    .lang-wrap { display: flex; gap: 2px; }
+    .lang-btn { padding: 2px 6px; font-size: 0.7rem; border-radius: 4px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; }
+    .lang-btn:hover, .lang-btn.active { color: var(--text); border-color: var(--text); background: rgba(0,0,0,0.05); }
+    body.theme-dark .lang-btn:hover, body.theme-dark .lang-btn.active { background: rgba(255,255,255,0.08); }
+    .body { padding: 12px 14px; }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+      color: #fff;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn:active { transform: scale(0.98); }
+    .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+    .row label { cursor: pointer; flex: 1; font-size: 0.9rem; }
+    input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4CAF50; }
+    body.theme-light { --text: #1a1a1a; --muted: #555; --border: rgba(0,0,0,0.12); }
+    body.theme-dark { --text: #e8e8e8; --muted: rgba(255,255,255,0.5); --border: rgba(255,255,255,0.08); }
+    .hint { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+    #status { font-size: 0.8rem; color: #2e7d32; margin-top: 8px; min-height: 1.2em; }
+    body.theme-dark #status { color: #81C784; }
+    #status.error { color: #c62828; }
+    body.theme-dark #status.error { color: #e57373; }
+    .countdown { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+    .theme-toggle, .link-tab-btn { padding: 6px 10px; border-radius: 5px; border: 1px solid var(--border); background: transparent; color: var(--text); font-size: 0.8rem; cursor: pointer; }
+    .btn-secondary { background: var(--border); color: var(--text); }
+    .btn-link { background: transparent; color: var(--muted); font-weight: normal; box-shadow: none; }
+  </style>
+</head>
+<body class="theme-light">
+  <div class="header">
+    <h1 id="title">YOFarmer</h1>
+    <div class="header-right">
+      <span class="lang-wrap">
+        <button type="button" class="lang-btn" data-locale="en" id="langEn">EN</button>
+        <button type="button" class="lang-btn" data-locale="da" id="langDa">DA</button>
+      </span>
+      <button type="button" class="theme-toggle" id="themeToggle">Dark</button>
+    </div>
+  </div>
+  <div class="body">
+    <button class="btn" id="sendNow">Send now</button>
+    <div class="row">
+      <input type="checkbox" id="auto">
+      <label for="auto" id="autoLabel">Auto</label>
+    </div>
+    <button type="button" class="btn btn-secondary" id="stopBtn">Stop</button>
+    <div id="countdown" class="countdown" style="display: none;"></div>
+    <div id="status"></div>
+    <button type="button" class="btn btn-link" id="linkTab">Link this tab</button>
+    <button type="button" class="btn btn-link" id="openOptions">Open settings</button>
+  </div>
+  <script src="i18n.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

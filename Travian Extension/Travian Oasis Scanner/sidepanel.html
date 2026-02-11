@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Travian Oasis Scanner</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      margin: 0;
+      padding: 12px;
+      font-size: 13px;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+    h2 { font-size: 1rem; margin: 0 0 10px 0; }
+    .section { margin-bottom: 12px; }
+    .bonus-filters, .oasis-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .bonus-filters label, .oasis-filters label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+    input[type="checkbox"] { width: 16px; height: 16px; accent-color: #4CAF50; }
+    .row { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+    .row label { min-width: 80px; }
+    input[type="number"] {
+      width: 60px;
+      padding: 6px 8px;
+      border: 1px solid rgba(0,0,0,0.2);
+      border-radius: 4px;
+    }
+    .btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: #fff;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    .oasis-list { max-height: 400px; overflow-y: auto; }
+    .oasis-item {
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.08);
+      cursor: pointer;
+    }
+    .oasis-item:hover { background: #f0f7f0; }
+    .oasis-coords { font-weight: 600; }
+    .oasis-meta { font-size: 11px; color: #666; margin-top: 2px; }
+    .oasis-troops { font-size: 11px; margin-top: 2px; }
+    .oasis-actions { margin-top: 6px; display: flex; gap: 6px; }
+    .oasis-actions button { font-size: 11px; padding: 4px 8px; }
+    .active-village { font-size: 12px; color: #2e7d32; margin-bottom: 8px; }
+    .empty-state { padding: 20px; text-align: center; color: #666; }
+    .hint { font-size: 11px; color: #666; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <h2>Travian Oasis Scanner</h2>
+
+  <div class="section">
+    <div class="active-village" id="activeVillage">Aktive by: -</div>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+      <button type="button" class="btn btn-secondary" id="refreshVillages">Opdater byer</button>
+      <button type="button" class="btn" id="scanRadius">Scan radius</button>
+      <button type="button" class="btn btn-secondary" id="stopScan" style="display: none;">Stop</button>
+    </div>
+    <p class="hint" id="scanHint">Scanner alle felter inden for radius fra aktiv by. Radius skal være sat.</p>
+  </div>
+
+  <div class="section">
+    <h2>Bonus</h2>
+    <div class="bonus-filters">
+      <label><input type="checkbox" id="bonusLumber" checked> Lumber</label>
+      <label><input type="checkbox" id="bonusClay" checked> Clay</label>
+      <label><input type="checkbox" id="bonusIron" checked> Iron</label>
+      <label><input type="checkbox" id="bonusCrop" checked> Crop</label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Oaser</h2>
+    <div class="oasis-filters">
+      <label><input type="checkbox" id="filterEmpty" checked> Tomme</label>
+      <label><input type="checkbox" id="filterWithAnimals" checked> Med dyr</label>
+      <label><input type="checkbox" id="showHidden"> Vis skjulte</label>
+    </div>
+    <div class="row">
+      <label for="maxRadius">Max radius</label>
+      <input type="number" id="maxRadius" value="" placeholder="Alle" min="0" max="100">
+      <span class="hint">felter</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <button type="button" class="btn btn-secondary" id="exportBtn">Eksporter CSV</button>
+    <button type="button" class="btn btn-secondary" id="clearBtn">Ryd oase-liste</button>
+    <button type="button" class="btn btn-secondary" id="fetchDetails" title="Simuler klik for at hente troops/bonus – kan tage tid">Hent detaljer (troops)</button>
+  </div>
+  <div class="section" id="scanStatus" style="display: none;">
+    <span id="scanStatusText">Scanner...</span>
+  </div>
+
+  <div class="oasis-list" id="oasisList"></div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>YOFarmer – Indstillinger</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+    body.theme-dark { background: #1a1a2e; color: #e8e8e8; }
+    h1 { font-size: 1.5rem; margin: 0 0 24px 0; }
+    h2 { font-size: 1.1rem; margin: 20px 0 10px 0; border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 6px; }
+    body.theme-dark h2 { border-color: rgba(255,255,255,0.1); }
+    .section { margin-bottom: 24px; }
+    .row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .row label { flex: 0 0 140px; }
+    input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4CAF50; }
+    input[type="number"], input[type="text"] {
+      padding: 8px 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(0,0,0,0.2);
+      background: #fff;
+      font-size: 0.9rem;
+    }
+    body.theme-dark input[type="number"], body.theme-dark input[type="text"] {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #e8e8e8;
+    }
+    input[type="number"] { width: 80px; }
+    input[type="text"].url { width: 100%; max-width: 400px; }
+    select {
+      padding: 8px 10px;
+      border-radius: 5px;
+      border: 1px solid rgba(0,0,0,0.2);
+      background: #fff;
+      font-size: 0.9rem;
+      min-width: 160px;
+    }
+    body.theme-dark select {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #e8e8e8;
+    }
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+      color: #fff;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    body.theme-dark .btn-secondary { background: rgba(255,255,255,0.15); color: #e8e8e8; }
+    .hint { font-size: 0.8rem; color: #666; margin-top: 4px; }
+    body.theme-dark .hint { color: rgba(255,255,255,0.5); }
+    #linkedStatus { font-size: 0.9rem; margin: 8px 0; }
+    #farmListsTable { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    #farmListsTable th, #farmListsTable td { padding: 8px 10px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    body.theme-dark #farmListsTable th, body.theme-dark #farmListsTable td { border-color: rgba(255,255,255,0.08); }
+    #farmListsTable th { font-weight: 600; }
+    .tactic-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .tactic-row input.name { flex: 1; min-width: 120px; }
+    .tactic-row input.num { width: 70px; }
+    .theme-toggle { margin-bottom: 16px; }
+  </style>
+</head>
+<body class="theme-light">
+  <div class="section" style="margin-bottom: 16px;">
+    <label for="localeSelect" style="margin-right: 8px;">Language / Sprog</label>
+    <select id="localeSelect">
+      <option value="en">English</option>
+      <option value="da">Dansk</option>
+    </select>
+  </div>
+  <h1 id="optionsTitle">YOFarmer – Settings</h1>
+  <button type="button" class="btn btn-secondary theme-toggle" id="themeToggle">Dark theme</button>
+
+  <div class="section">
+    <h2 id="headingGlobal">Global interval</h2>
+    <p class="hint" id="hintGlobal">Used for "Start all" and for lists without a tactic.</p>
+    <div class="row">
+      <label for="randomPreset" id="labelPreset">Preset</label>
+      <select id="randomPreset">
+        <option value="low">Low</option>
+        <option value="medium" selected>Medium</option>
+        <option value="high">High</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+    <div class="row" id="customIntervalRow" style="display: none;">
+      <label for="customBaseMinutes" id="labelBaseMin">Base (min)</label>
+      <input type="number" id="customBaseMinutes" value="5" min="1" max="120">
+      <label for="customRandomizationSeconds" id="labelRandSec">Randomization (sec)</label>
+      <input type="number" id="customRandomizationSeconds" value="60" min="0" max="300">
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 id="headingTactics">Tactics</h2>
+    <p class="hint" id="hintTactics">Create up to 5 tactics. Assign them to individual farm lists below.</p>
+    <div id="tacticsList"></div>
+    <button type="button" class="btn btn-secondary" id="addTactic" style="margin-top: 8px;">Add tactic</button>
+  </div>
+
+  <div class="section">
+    <h2 id="headingFarmLists">Farm lists</h2>
+    <p class="hint" id="hintFarmLists">Update lists by opening the Travian farm list page and clicking "Refresh lists".</p>
+    <button type="button" class="btn btn-secondary" id="refreshLists">Refresh lists</button>
+    <div id="farmListsWrap" style="margin-top: 12px;">
+      <table id="farmListsTable">
+        <thead><tr><th id="thList">List</th><th id="thInAuto">In Auto</th><th id="thTactic">Tactic</th></tr></thead>
+        <tbody id="farmListsBody"></tbody>
+      </table>
+      <p class="hint" id="noListsHint">No lists yet. Open farm list page and click "Refresh lists".</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 id="headingStartAll">Start all / selected lists</h2>
+    <div class="row">
+      <input type="checkbox" id="startAll" checked>
+      <label for="startAll" id="labelStartAll">Start all lists</label>
+    </div>
+    <p class="hint" id="selectedListsHint">With "Selected lists only" the lists you checked below are used.</p>
+  </div>
+
+  <div class="section">
+    <h2 id="headingLinkedTab">Linked tab</h2>
+    <p class="hint" id="hintLinked">Auto sends to the linked tab. Open farm list tab and click "Link this tab" in popup, or enter URL and click "Open farm list".</p>
+    <div class="row">
+      <label for="farmListUrl" id="labelFarmListUrl">Farm list URL</label>
+      <input type="text" id="farmListUrl" class="url" placeholder="https://...travian.../farmlist">
+    </div>
+    <div class="row" style="margin-top: 8px;">
+      <button type="button" class="btn btn-secondary" id="openFarmList">Open farm list</button>
+    </div>
+    <div id="linkedStatus" class="hint">No linked tab.</div>
+  </div>
+
+  <div class="section">
+    <h2 id="headingSafety">Safety & behaviour</h2>
+    <div class="row">
+      <input type="checkbox" id="simulateMouse" checked>
+      <label for="simulateMouse" id="labelSimulateMouse">Simulate mouse (mouseenter/mousemove before click)</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="onlyWhenTabVisible">
+      <label for="onlyWhenTabVisible" id="labelOnlyWhenTabVisible">Only run when Travian tab is visible</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="maxRunsPerHourEnabled">
+      <label for="maxRunsPerHourEnabled" id="labelMaxRunsPerHour">Max runs per hour</label>
+    </div>
+    <div class="row" id="rowMaxRunsPerHour" style="display: none;">
+      <label for="maxRunsPerHour" id="labelMaxRunsPerHourValue">Runs</label>
+      <input type="number" id="maxRunsPerHour" value="60" min="1" max="200">
+      <span class="hint" id="hintMaxRunsPerHour"></span>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="minDelayMinutesEnabled">
+      <label for="minDelayMinutesEnabled" id="labelMinDelay">Minimum delay between runs (minutes)</label>
+    </div>
+    <div class="row" id="rowMinDelay" style="display: none;">
+      <label for="minDelayMinutes" id="labelMinDelayValue">Minutes</label>
+      <input type="number" id="minDelayMinutes" value="2" min="0" max="60">
+      <span class="hint" id="hintMinDelay"></span>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="confirmBeforeSendEnabled">
+      <label for="confirmBeforeSendEnabled" id="labelConfirmBeforeSend">Delay before send (seconds)</label>
+    </div>
+    <div class="row" id="rowConfirmDelay" style="display: none;">
+      <label for="confirmDelaySeconds" id="labelConfirmDelayValue">Seconds</label>
+      <input type="number" id="confirmDelaySeconds" value="0" min="0" max="30">
+      <span class="hint" id="hintConfirmDelay"></span>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="pauseOnCaptchaEnabled">
+      <label for="pauseOnCaptchaEnabled" id="labelPauseOnCaptcha">Pause auto when captcha detected</label>
+    </div>
+    <p class="hint" id="hintPauseOnCaptcha" style="margin-left: 28px;"></p>
+    <div class="row">
+      <input type="checkbox" id="soundOnSendEnabled">
+      <label for="soundOnSendEnabled" id="labelSoundOnSend">Play sound when troops are sent</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="notificationOnSendEnabled">
+      <label for="notificationOnSendEnabled" id="labelNotificationOnSend">Show notification when troops are sent</label>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="timeWindowEnabled">
+      <label for="timeWindowEnabled" id="labelTimeWindow">Only run in time window</label>
+    </div>
+    <div class="row" id="rowTimeWindow" style="display: none;">
+      <label for="timeWindowStart" id="labelTimeWindowStart">From (HH:MM)</label>
+      <input type="text" id="timeWindowStart" placeholder="00:00" maxlength="5" style="width: 70px;">
+      <label for="timeWindowEnd" id="labelTimeWindowEnd">To (HH:MM)</label>
+      <input type="text" id="timeWindowEnd" placeholder="23:59" maxlength="5" style="width: 70px;">
+      <span class="hint" id="hintTimeWindow"></span>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="extraRandomDelayEnabled">
+      <label for="extraRandomDelayEnabled" id="labelExtraRandomDelay">Extra random delay (seconds)</label>
+    </div>
+    <div class="row" id="rowExtraRandomDelay" style="display: none;">
+      <label for="extraRandomDelaySeconds" id="labelExtraRandomDelayValue">± Seconds</label>
+      <input type="number" id="extraRandomDelaySeconds" value="5" min="0" max="120">
+      <span class="hint" id="hintExtraRandomDelay"></span>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

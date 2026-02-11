@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Travian Tracker – Indstillinger</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #f5f5f5;
+      color: #1a1a1a;
+    }
+    body.theme-dark { background: #1a1a2e; color: #e8e8e8; }
+    h1 { font-size: 1.5rem; margin: 0 0 24px 0; }
+    h2 { font-size: 1.1rem; margin: 20px 0 10px 0; border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 6px; }
+    body.theme-dark h2 { border-color: rgba(255,255,255,0.1); }
+    .section { margin-bottom: 24px; }
+    .row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+    .row label { flex: 0 0 160px; }
+    input[type="text"], input[type="number"], textarea {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.2);
+      background: #fff;
+      font-size: 0.9rem;
+    }
+    body.theme-dark input[type="text"], body.theme-dark input[type="number"], body.theme-dark textarea {
+      border-color: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #e8e8e8;
+    }
+    input[type="text"].url { width: 100%; max-width: 400px; }
+    input[type="number"] { width: 70px; }
+    textarea { width: 100%; min-height: 80px; resize: vertical; }
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+      color: #fff;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn-secondary { background: #e0e0e0; color: #333; }
+    body.theme-dark .btn-secondary { background: rgba(255,255,255,0.15); color: #e8e8e8; }
+    .hint { font-size: 0.8rem; color: #666; margin-top: 4px; }
+    body.theme-dark .hint { color: rgba(255,255,255,0.5); }
+    .theme-toggle { margin-bottom: 16px; }
+    .scan-time-row { display: flex; gap: 8px; margin: 4px 0; }
+    .scan-time-row input { width: 70px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85rem; }
+    th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08); }
+    body.theme-dark th, body.theme-dark td { border-color: rgba(255,255,255,0.08); }
+    th { font-weight: 600; }
+    .growth-table-wrap, .candidates-wrap { max-height: 280px; overflow: auto; }
+    .candidates-list { max-height: 220px; overflow: auto; }
+    .candidate-item { padding: 6px 8px; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 0.85rem; }
+    body.theme-dark .candidate-item { border-color: rgba(255,255,255,0.06); }
+    .bulk-row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+    .bulk-row input { width: 60px; }
+    select { padding: 6px 8px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.2); background: #fff; font-size: 0.9rem; }
+    body.theme-dark select { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: #e8e8e8; }
+    .btn-small { padding: 4px 10px; font-size: 0.8rem; }
+  </style>
+</head>
+<body class="theme-light">
+  <h1>Travian Tracker – Indstillinger</h1>
+  <button type="button" class="btn btn-secondary theme-toggle" id="themeToggle">Mørk tema</button>
+
+  <div class="section">
+    <h2>Server URL</h2>
+    <div class="row">
+      <label for="serverBaseUrl">Travian server (base)</label>
+      <input type="text" id="serverBaseUrl" class="url" placeholder="https://ts30.x3.international.travian.com">
+    </div>
+    <p class="hint">Extensionen henter {baseURL}/map.sql</p>
+    <div class="row" style="margin-top: 8px;">
+      <label for="mapLinkTemplate">Map link-format</label>
+      <select id="mapLinkTemplate">
+        <option value="{base}/position_details?x={x}&y={y}">position_details (standard)</option>
+        <option value="{base}/karte.php?x={x}&y={y}">karte.php</option>
+      </select>
+    </div>
+    <p class="hint">Bruges til links til kandidater og bulk-åbn.</p>
+  </div>
+
+  <div class="section">
+    <h2>Farm list URL</h2>
+    <div class="row">
+      <label for="farmListUrl">Farm list-siden</label>
+      <input type="text" id="farmListUrl" class="url" placeholder="https://...travian.../farmlist">
+    </div>
+    <p class="hint">Ved hver af de 6 daglige scans synces farm list automatisk, hvis du har en fane åben med farm list-siden (URL skal indeholde "farmlist").</p>
+  </div>
+
+  <div class="section">
+    <h2>Scan-tider (6 om dagen)</h2>
+    <p class="hint">Tidspunkterne bruger din <strong>lokal tid</strong> (browserens tidszone). Angiv klokkeslæt (HH:MM) for hver scan.</p>
+    <div id="scanTimesContainer"></div>
+    <button type="button" class="btn btn-secondary" id="resetScanTimes">Nulstil til standard</button>
+  </div>
+
+  <div class="section">
+    <h2>Mine koordinater</h2>
+    <p class="hint">Én koordinat per linje, f.eks. "-54 200" eller "-54,200". Bruges til afstand og inaktive.</p>
+    <div class="row">
+      <button type="button" class="btn btn-secondary" id="useCurrentVillage">Brug aktiv by fra fane</button>
+    </div>
+    <textarea id="myCoords" placeholder="-54 200&#10;100 50"></textarea>
+  </div>
+
+  <div class="section">
+    <h2>Bulk-åbn</h2>
+    <div class="row">
+      <label for="bulkOpenBatchSize">Batchstørrelse (faner)</label>
+      <input type="number" id="bulkOpenBatchSize" value="25" min="5" max="50">
+    </div>
+    <div class="row">
+      <label for="maxOpenPerClick">Maks faner per klik</label>
+      <input type="number" id="maxOpenPerClick" value="100" min="10" max="100">
+    </div>
+    <p class="hint">Batchstørrelse: antal faner ad gangen (rate limiting). Maks per klik: øvre grænse for "Åbn X links".</p>
+  </div>
+
+  <div class="section">
+    <h2>Vækst (growth)</h2>
+    <div class="row">
+      <label for="growthDaysBack">Sammenlign med (dage siden)</label>
+      <select id="growthDaysBack">
+        <option value="1">1 dag</option>
+        <option value="3">3 dage</option>
+        <option value="7" selected>7 dage</option>
+      </select>
+      <button type="button" class="btn btn-secondary" id="refreshGrowth">Opdater</button>
+      <button type="button" class="btn btn-secondary btn-small" id="exportGrowthCsv">Eksport CSV</button>
+    </div>
+    <p class="hint" id="growthDataCoverage"></p>
+    <div class="growth-table-wrap">
+      <table id="growthTable">
+        <thead><tr><th>Spiller</th><th>Vækst</th><th>Byer</th></tr></thead>
+        <tbody id="growthBody"></tbody>
+      </table>
+      <p class="hint" id="growthHint">Klik Opdater efter scan.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Kandidater (ingen vækst / minus-vækst over X dage)</h2>
+    <p class="hint" id="candidatesDataCoverage"></p>
+    <div class="row">
+      <label for="candidateDays">Antal dage (X)</label>
+      <input type="number" id="candidateDays" value="7" min="1" max="90">
+      <button type="button" class="btn" id="findCandidates">Find kandidater</button>
+    </div>
+    <div class="row">
+      <input type="checkbox" id="filterOneVillage" style="width: auto;">
+      <label for="filterOneVillage">Kun spillere med 1 by</label>
+      <label for="filterAllianceTag">Alliance tag</label>
+      <input type="text" id="filterAllianceTag" placeholder="Kun denne (tom = alle)" style="width: 120px;">
+    </div>
+    <div class="row">
+      <label for="sortCandidates">Sorter efter</label>
+      <select id="sortCandidates">
+        <option value="distance">Afstand (nærmeste først)</option>
+        <option value="population">Population (lav først)</option>
+        <option value="populationDesc">Population (høj først)</option>
+        <option value="player">Spiller</option>
+      </select>
+      <label for="filterTribe">Stamme</label>
+      <select id="filterTribe">
+        <option value="">Alle</option>
+        <option value="1">Roman</option>
+        <option value="2">Teuton</option>
+        <option value="3">Gaul</option>
+        <option value="6">Egyptian</option>
+        <option value="7">Hun</option>
+      </select>
+      <label for="maxRadius">Max radius</label>
+      <input type="number" id="maxRadius" placeholder="—" min="0" style="width: 60px;">
+    </div>
+    <div class="bulk-row">
+      <button type="button" class="btn btn-secondary" id="openCandidates">Åbn</button>
+      <input type="number" id="openCount" value="20" min="1" max="100">
+      <span>nye links</span>
+      <span class="hint" id="candidatesLeft"></span>
+    </div>
+    <div class="bulk-row">
+      <button type="button" class="btn btn-secondary" id="syncFarmList">Opdater fra farm list</button>
+      <button type="button" class="btn btn-secondary btn-small" id="resetOpenedLinks">Nulstil åbnede links</button>
+      <button type="button" class="btn btn-secondary btn-small" id="exportCandidates">Eksport</button>
+      <button type="button" class="btn btn-secondary btn-small" id="importCandidates">Import</button>
+      <input type="file" id="importFile" accept=".json,.csv" style="display:none;">
+    </div>
+    <div class="candidates-list" id="candidatesList"></div>
+  </div>
+
+  <div class="section">
+    <h2>Farm list – fjern duplikater</h2>
+    <p class="hint">Åbn farm list-siden i en fane, så kan du scanne og se unikke targets.</p>
+    <button type="button" class="btn btn-secondary" id="scanFarmLists">Scan farm lists</button>
+    <p class="hint" id="dedupeResult"></p>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

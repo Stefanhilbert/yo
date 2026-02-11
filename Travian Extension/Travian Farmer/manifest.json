@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "YOFarmer",
+  "version": "1.0.0",
+  "description": "Send Travian farm lists with human-like timing",
+  "permissions": ["storage", "alarms", "activeTab", "power", "notifications"],
+  "host_permissions": ["*://*.travian.com/*", "*://*.travian.dk/*", "*://*.travian.de/*", "*://*.international.travian.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YOFarmer",
+    "default_icon": {"48": "icons/48.png", "128": "icons/128.png"}
+  },
+  "background": {"service_worker": "background.js"},
+  "content_scripts": [{
+    "matches": ["*://*.travian.com/*", "*://*.travian.dk/*", "*://*.travian.de/*", "*://*.international.travian.com/*"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }],
+  "options_ui": {"page": "options.html", "open_in_tab": true}
+}
