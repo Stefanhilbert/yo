@@ -8,6 +8,13 @@ import { TroopCalculatorPage } from './pages/TroopCalculatorPage.tsx'
 import { PvpCalculatorPage } from './pages/PvpCalculatorPage.tsx'
 import { PricingPage } from './pages/PricingPage.tsx'
 import { NotFoundPage } from './pages/NotFoundPage.tsx'
+import { showFullNav } from './lib/env.ts'
+
+/** Renders children only when full nav (extensions/pricing) is enabled; otherwise redirect to home. Used to hide /pricing and /extensions on Vercel. */
+function RequireFullNav({ children }: { children: React.ReactNode }) {
+  if (!showFullNav) return <Navigate to="/" replace />
+  return <>{children}</>
+}
 
 export const router = createBrowserRouter([
   {
@@ -16,10 +23,10 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'extensions', element: <ExtensionsIndexPage /> },
-      { path: 'extensions/:slug', element: <ExtensionDetailPage /> },
+      { path: 'extensions', element: <RequireFullNav><ExtensionsIndexPage /></RequireFullNav> },
+      { path: 'extensions/:slug', element: <RequireFullNav><ExtensionDetailPage /></RequireFullNav> },
       { path: 'how-to', element: <HowToPage /> },
-      { path: 'pricing', element: <PricingPage /> },
+      { path: 'pricing', element: <RequireFullNav><PricingPage /></RequireFullNav> },
       { path: 'tools', element: <Navigate to="/tools/pve-calculator" replace /> },
       { path: 'tools/pve-calculator', element: <TroopCalculatorPage /> },
       { path: 'tools/troop-calculator', element: <Navigate to="/tools/pve-calculator" replace /> },
