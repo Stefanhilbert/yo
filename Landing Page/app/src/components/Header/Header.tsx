@@ -26,8 +26,8 @@ function ShieldIcon() {
 }
 
 export function Header() {
-  const { tribe, setTribe } = useTribe()
-  const { t, locale, setLocale } = useTranslation()
+  const { setTribe } = useTribe()
+  const { t, setLocale } = useTranslation()
   const [localeOpen, setLocaleOpen] = useState(false)
   const [tribeOpen, setTribeOpen] = useState(false)
   const localeWrapRef = useRef<HTMLDivElement>(null)

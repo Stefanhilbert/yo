@@ -68,8 +68,6 @@ export function TroopCalculator({ mode, title, showPopulation = false, showBudge
   const [hasCalculated, setHasCalculated] = useState(false)
   const [rejectMessage, setRejectMessage] = useState<string | null>(null)
 
-  const targets = useMemo(() => listResults.flatMap((l) => l.targets), [listResults])
-
   /** PvE = oasis/unoccupied or 0 population. Reject in PvE when list looks like PvP (no such markers). */
   function looksLikePvP(results: FarmListResult[]): boolean {
     const allTargets = results.flatMap((r) => r.targets)
