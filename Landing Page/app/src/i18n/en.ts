@@ -38,6 +38,7 @@ export const en = {
     viewDetails: 'View details →',
     allExtensions: 'All extensions →',
     latestUpdates: 'Latest updates',
+    beta: 'Beta',
   },
   howTo: {
     title: 'How-to: Download & install',
@@ -60,6 +61,7 @@ export const en = {
   },
   extensionDetail: {
     notFound: 'Extension not found',
+    beta: 'Beta',
     notFoundDesc: 'Could not find',
     backToExtensions: 'Extensions',
     installGuide: 'Install guide →',

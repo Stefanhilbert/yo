@@ -122,9 +122,6 @@ export function Header() {
             </div>
           </div>
 
-          <NavLink to="/pricing" className={({ isActive }) => (isActive ? styles.active : styles.link)}>
-            {t('nav.pricing')}
-          </NavLink>
         </nav>
 
         <div className={styles.right}>

@@ -14,6 +14,7 @@ export function ExtensionCard({ ext }: { ext: ExtensionInfo }) {
           <span className={styles.title}>{ext.name}</span>
         </Link>
         <div className={styles.badgeRow}>
+          <span className={styles.badge}>{t('extensions.beta')}</span>
           <span className={styles.badge}>v{ext.version}</span>
         </div>
       </div>

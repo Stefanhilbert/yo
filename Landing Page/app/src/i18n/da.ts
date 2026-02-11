@@ -38,6 +38,7 @@ export const da = {
     viewDetails: 'Se detaljer →',
     allExtensions: 'Alle extensions →',
     latestUpdates: 'Seneste opdateringer',
+    beta: 'Beta',
   },
   howTo: {
     title: 'How-to: Download og installation',
@@ -60,6 +61,7 @@ export const da = {
   },
   extensionDetail: {
     notFound: 'Extension ikke fundet',
+    beta: 'Beta',
     notFoundDesc: 'Kunne ikke finde',
     backToExtensions: 'Extensions',
     installGuide: 'Installationsvejledning →',

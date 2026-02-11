@@ -23,6 +23,11 @@ const EXTENSIONS = [
     dir: path.join(repoRoot, 'Travian Extension', 'Travian Tracker'),
     installFolder: 'Travian Extension/Travian Tracker',
   },
+  {
+    slug: 'interval-timer',
+    dir: path.join(repoRoot, 'Travian Extension', 'Interval Timer'),
+    installFolder: 'Travian Extension/Interval Timer',
+  },
 ]
 
 function parseChangelog(markdown) {

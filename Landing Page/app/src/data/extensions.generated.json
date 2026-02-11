@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-11T07:33:09.397Z",
+  "generatedAt": "2026-02-11T09:20:57.727Z",
   "extensions": [
     {
       "slug": "yofarmer",
@@ -87,6 +87,16 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "interval-timer",
+      "name": "YO Timer",
+      "version": "1.0.0",
+      "description": "Interval timer with sound, notification and optional redirect",
+      "installFolder": "Travian Extension/Interval Timer",
+      "icon48": "/extensions/interval-timer/48.png",
+      "icon128": "/extensions/interval-timer/128.png",
+      "releases": []
     }
   ]
 }

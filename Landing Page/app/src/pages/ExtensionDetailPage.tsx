@@ -7,6 +7,7 @@ const FALLBACK_INSTALL_FOLDER: Record<string, string> = {
   yofarmer: 'Travian Extension/Travian Farmer',
   'oasis-scanner': 'Travian Extension/Travian Oasis Scanner',
   tracker: 'Travian Extension/Travian Tracker',
+  'interval-timer': 'Travian Extension/Interval Timer',
 }
 
 export function ExtensionDetailPage() {
@@ -37,6 +38,7 @@ export function ExtensionDetailPage() {
           <div>
             <h1 className={styles.h1}>{ext.name}</h1>
             <div className={styles.meta}>
+              <span className={styles.badge}>{t('extensionDetail.beta')}</span>
               <span className={styles.badge}>v{ext.version}</span>
               {ext.description ? <span className={styles.desc}>{ext.description}</span> : null}
             </div>

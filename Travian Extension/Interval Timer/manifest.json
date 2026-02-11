@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "YO Timer",
+  "version": "1.0.0",
+  "description": "Interval timer with sound, notification and optional redirect",
+  "permissions": ["storage", "alarms", "notifications"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "YO Timer",
+    "default_icon": {
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
+}
